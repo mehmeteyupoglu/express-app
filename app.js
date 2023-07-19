@@ -1,15 +1,15 @@
-const os = require("os");
+const { readFileSync, writeFileSync } = require("fs");
 
-const user = os.userInfo();
-console.log("user", user);
+console.log("readFileSync", readFileSync);
 
-console.log(`The System Uptime is ${os.uptime()} seconds`);
+const first = readFileSync("./content/first.txt", "utf-8");
+const second = readFileSync("./content/second.txt", "utf-8");
 
-const currentOS = {
-  name: os.type(),
-  release: os.release(),
-  totalMem: os.totalmem(),
-  freeMem: os.freemem(),
-};
+writeFileSync(
+  "./content/subfolder/result-sync.txt",
+  "Here is the result " + first + "\b" + second
+);
 
-console.log("currentOS", currentOS);
+const result = readFileSync("./content/subfolder/result-sync.txt", "utf-8");
+
+console.log("result", result);
