@@ -1,15 +1,20 @@
-const { readFileSync, writeFileSync } = require("fs");
+const http = require("http");
 
-console.log("readFileSync", readFileSync);
+const server = http.createServer((req, res) => {
+  if (req.url === "/") {
+    res.end("Welcome to our home page");
+  } else if (req.url === "/about") {
+    res.end("This is the about page");
+  } else {
+    res.writeHead(404, { "Content-Type": "text/html" });
+    res.end(`
+      <h1>Oops!</h1>
+      <p>We can't seem to find the path you're looking for!</p>
+      <a href="/">back home</a>
+    `);
+  }
+});
 
-const first = readFileSync("./content/first.txt", "utf-8");
-const second = readFileSync("./content/second.txt", "utf-8");
-
-writeFileSync(
-  "./content/subfolder/result-sync.txt",
-  "Here is the result " + first + "\b" + second
-);
-
-const result = readFileSync("./content/subfolder/result-sync.txt", "utf-8");
-
-console.log("result", result);
+server.listen(5000, () => {
+  console.log("Server is running on port 5000");
+});
